@@ -1,7 +1,7 @@
 // In App.js in a new project
 import 'react-native-gesture-handler';
 import * as React from 'react';
-import { View, Text, Button } from 'react-native';
+import { View, Text, Button, Image } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 
@@ -49,11 +49,21 @@ function DetailsScreen({ route, navigation }) {
   );
 }
 
+function LogoTitle() {
+  return (
+    <Image
+      style={{ width: 50, height: 50 }}
+      source={require('./assets/favicon.png')}
+    />
+  );
+}
+
 const Stack = createStackNavigator();
 
 function App() {
   return (
     <NavigationContainer>
+      {/* header configuration */}
       <Stack.Navigator
               screenOptions={{
                 headerStyle: {
@@ -65,8 +75,23 @@ function App() {
                 },
               }}
         >
-        <Stack.Screen name="Home" component={HomeScreen} />
-        <Stack.Screen name="Details" component={DetailsScreen} />
+        <Stack.Screen 
+          name="Home" 
+          component={HomeScreen} 
+          options={{
+          headerTitle: props => <LogoTitle {...props} />,
+          headerRight: () => (
+            <Button
+              onPress={() => alert('This is a button!')}
+              title="Info"
+              color="#fff"
+            />
+          ),
+        }}/>
+        <Stack.Screen 
+              name="Details" 
+              component={DetailsScreen} 
+              options={({ route }) => ({ title: route.params.name })}/>
       </Stack.Navigator>
     </NavigationContainer>
   );
